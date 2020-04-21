@@ -40,7 +40,7 @@
     "vue-markdown": "^2.2.4",
     "vue-template-compiler": "^2.6.11"
   },
-  "main": "lib/report-render.umd.min.js",
+  "main": "lib/packages/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wdy0702/report-render"
