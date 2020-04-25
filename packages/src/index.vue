@@ -2,10 +2,11 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-04-21 11:39:01
+ * @LastEditTime: 2020-04-22 15:44:04
  -->
 <template>
   <div class="pulse-report-render" :style="calWebStyle">
+    <!-- <remote-js src="./vue-grid-layout.umd.min.js"></remote-js> -->
     <grid-layout :layout.sync="calChartGridLayout" :col-num="48" :row-height="rowHeight" :is-draggable="false" :is-resizable="false" :is-mirrored="false" :vertical-compact="false" :margin="[0,0]" :use-css-transforms="true">
       <grid-item v-for="item in calReportData" :key="item.chartGrid.i" :x="item.chartGrid.x" :y="item.chartGrid.y" :w="item.chartGrid.w" :h="item.chartGrid.h" :i="item.chartGrid.i">
         <div class="vue-grid-item-wrap">
@@ -33,6 +34,15 @@ export default {
     }
   },
   components: {
+
+    // 'remote-js': {
+    //   render (createElement) {
+    //     return createElement('script', { attrs: { type: 'text/javascript', src: this.src } });
+    //   },
+    //   props: {
+    //     src: { type: String, required: true },
+    //   }
+    // },
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     PulseEcharts,
