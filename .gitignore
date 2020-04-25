@@ -9,6 +9,7 @@ lib/
 vue.config.js
 babel.config.js
 tsconfig.json
+.browserslistrc
 
 # local env files
 .env.local
