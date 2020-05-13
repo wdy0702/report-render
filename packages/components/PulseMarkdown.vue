@@ -1,3 +1,9 @@
+<!--
+ * @Author: dengyue.wang
+ * @Date: 2020-04-21 05:34:35
+ * @LastEditors: dengyue.wang
+ * @LastEditTime: 2020-04-29 17:03:43
+ -->
 <template>
   <div class="md-wrap">
     <vue-markdown class="markdown" :anchorAttributes="{target:'_blank'}" :source="source_string"></vue-markdown>
@@ -33,44 +39,55 @@
   }
 </script>
 
-<style lang="scss" type="text/scss">
-  .md-wrap {
-    margin: 3px 0;
-    width: 100%;
-    font-size: 12px;
-    color: #54585a;
-    text-align: justify;
-    a {
-      color: #3084bb;
-    }
-    ul {
-      margin-left: 1.5em;
-      li{
-        list-style-type: disc;
-      }
-    }
-    img {
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      display: block;
-      font-weight: bold;
-    }
-    h1 {
-      font-size: 2em;
-    }
-    h2 {
-      font-size: 1.5em;
-    }
-    h3 {
-      font-size: 1.17em;
-    }
-    h5 {
-      font-size: 0.83em;
-    }
-    h6 {
-      font-size: 0.67em;
-    }
-  }
+<style lang="css" type="text/css">
+.md-wrap {
+  margin: 3px 0;
+  width: 100%;
+  font-size: 12px;
+  color: #54585a;
+  text-align: justify;
+}
+
+.md-wrap a {
+  color: #3084bb;
+}
+
+.md-wrap ul {
+  margin-left: 1.5em;
+}
+
+.md-wrap ul li {
+  list-style-type: disc;
+}
+
+.md-wrap img {
+  max-width: 100%;
+}
+
+.md-wrap h1, .md-wrap h2, .md-wrap h3, .md-wrap h4, .md-wrap h5, .md-wrap h6 {
+  display: block;
+  font-weight: bold;
+}
+
+.md-wrap h1 {
+  font-size: 2em;
+}
+
+.md-wrap h2 {
+  font-size: 1.5em;
+}
+
+.md-wrap h3 {
+  font-size: 1.17em;
+}
+
+.md-wrap h5 {
+  font-size: 0.83em;
+}
+
+.md-wrap h6 {
+  font-size: 0.67em;
+}
+
 </style>
 
