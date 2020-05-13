@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-25 08:15:57
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-04-26 18:52:06
+ * @LastEditTime: 2020-05-13 15:38:52
  -->
 # report-render
 
@@ -21,7 +21,7 @@ Vue.use(ReportRender)
 
 ## Use
 ```
-<report-render :reportData="reportData" :watermarkData="watermarkData"></report-render>
+<report-render ref="myReport" :reportData="reportData" :watermarkData="watermarkData"></report-render>
 
 ```
 ## Properties
@@ -31,7 +31,7 @@ Vue.use(ReportRender)
 | reportData    | true     | JSON | {}      | 报表数据结构 |
 | watermarkData | true     | JSON | {}      | 报表水印     |
 
-### reportData字段说明
+### reportData说明
 
 | Name                      | Required | Type    | Default | Description      |
 |---------------------------|----------|---------|---------|------------------|
@@ -44,12 +44,12 @@ Vue.use(ReportRender)
 | version_name              | false    | String  | ""      | 报表版本         |
 
 
-### watermarkData字段说明
+### watermarkData说明
 
 | Name               | Required | Type    | Default | Description         |
 |--------------------|----------|---------|---------|---------------------|
 | watermark_show     | true     | Boolean | true    | 是否显示水印        |
-| watermark_txt      | true     | String  | TEST    | 水印文字            |
+| watermark_txt      | true     | String  | ""      | 水印文字            |
 | watermark_x        | false    | Number  | 0       | 水印起始位置x轴坐标 |
 | watermark_y        | false    | Number  | 0       | 水印起始位置Y轴坐标 |
 | watermark_x_space  | false    | Number  | 0       | 水印x轴间隔         |
@@ -60,3 +60,12 @@ Vue.use(ReportRender)
 | watermark_width    | false    | Number  | 300     | 水印宽度            |
 | watermark_height   | false    | Number  | 200     | 水印高度            |
 | watermark_angle    | false    | Number  | 30      | 水印倾斜度数        |
+
+
+## Methods
+
+| Name            | Description  | E.g                                   |
+|-----------------|--------------|---------------------------------------|
+| removeWatermark | 手动移除水印 | this.$refs.myReport.removeWatermark() |
+
+

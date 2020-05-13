@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-13 15:13:58
+ * @LastEditTime: 2020-05-13 15:26:40
  -->
 <template>
   <div id="pulse-report-render" class="pulse-report-render" :style="calWebStyle">
@@ -214,10 +214,13 @@ export default {
   mounted () {
   },
   destroyed () {
+    this.removeWatermark()
   },
   activated () {
+    this.initWatermark()
   },
   deactivated () {
+    this.removeWatermark()
   },
   watch: {
     watermarkData: {
