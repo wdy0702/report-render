@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-13 11:21:27
+ * @LastEditTime: 2020-05-13 15:13:58
  -->
 <template>
   <div id="pulse-report-render" class="pulse-report-render" :style="calWebStyle">
@@ -25,7 +25,7 @@
               <div class="chapter-inner">
                 <div v-for="(unit,idx) in calTabsBody(item.child)" :key="`${idx}_${unit.chart_index}`" v-show="unit.active" class="chart-wrap">
                   <!-- chart -->
-                  <component :is="calChapterType(unit)" :options="unit.chart_option" :autoresize="true" :aspectRatio="unit.chart_aspect_ratio" @legendselectchanged="handleToggleLegend"></component>
+                  <component :is="calChapterType(unit)" :options="unit.chart_option" :styleObj="unit.style" :autoresize="true" :aspectRatio="unit.chart_aspect_ratio" @legendselectchanged="handleToggleLegend"></component>
                 </div>
               </div>
             </div>
@@ -141,7 +141,8 @@ export default {
         console.log(`当前水印内容%c:${this.watermarkData.watermark_txt}`, "color:#00bcbc;font-weight:bold;");
 
         watermark.init(Object.assign({}, {
-          watermark_txt: "",           //水印的内容
+          watermark_txt: "",
+          watermark_id: 'report-render-watermark',           //水印的内容
           watermark_x: 0,                //水印起始位置x轴坐标
           watermark_y: 0,                //水印起始位置Y轴坐标
           watermark_x_space: 0,          //水印x轴间隔
@@ -163,6 +164,9 @@ export default {
     * @return: 
     */
     removeWatermark () {
+      if (!document.querySelector("#report-render-watermark")) {
+        return
+      }
       watermark.remove()
     }
   },
@@ -208,18 +212,21 @@ export default {
 
   },
   mounted () {
-    this.initWatermark()
   },
   destroyed () {
-    this.removeWatermark()
   },
   activated () {
-    this.initWatermark()
   },
   deactivated () {
-    this.removeWatermark()
   },
   watch: {
+    watermarkData: {
+      handler (newName, oldName) {
+        this.initWatermark()
+      },
+      immediate: true,
+      deep: true
+    }
   }
 };
 </script>
