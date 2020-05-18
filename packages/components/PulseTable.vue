@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 05:34:35
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-13 11:30:05
+ * @LastEditTime: 2020-05-15 11:22:09
  -->
 <template>
   <div class="table-wrap">
@@ -74,14 +74,23 @@ export default {
 
             if (col != curCol) return
             // 百分数处理
+
             let tempExp = item.expression.replace(/(-?(\d+\.?\d+?)%)/g, (match) => {
+              console.log(match);
               const str = parseFloat(match)
 
               return str;
             })
+            
             //正则替换为单元格
             const formula = tempExp.replace(/(\$[A-Z]+)/g, (match) => {
-              const str = `parseFloat(self.options.series[${row}][${this.translateCellPos(match.split('$')[1]) - 1}])`
+              let str = ""
+
+              if (parseFloat(self.options.series[row][self.translateCellPos(match.split('$')[1]) - 1]) || parseFloat(self.options.series[row][self.translateCellPos(match.split('$')[1]) - 1]) === 0) { 
+                str = `parseFloat(self.options.series[${row}][${this.translateCellPos(match.split('$')[1]) - 1}])`
+              }else{
+                str = `self.options.series[${row}][${this.translateCellPos(match.split('$')[1]) - 1}]`
+              }
 
               return str;
             })

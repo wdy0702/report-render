@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-13 15:26:40
+ * @LastEditTime: 2020-05-18 15:07:04
  -->
 <template>
   <div id="pulse-report-render" class="pulse-report-render" :style="calWebStyle">
@@ -212,6 +212,7 @@ export default {
 
   },
   mounted () {
+    this.initWatermark()
   },
   destroyed () {
     this.removeWatermark()
@@ -227,7 +228,7 @@ export default {
       handler (newName, oldName) {
         this.initWatermark()
       },
-      immediate: true,
+      // immediate: true,
       deep: true
     }
   }
