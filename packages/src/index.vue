@@ -2,11 +2,11 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-18 15:07:04
+ * @LastEditTime: 2020-05-18 15:48:46
  -->
 <template>
   <div id="pulse-report-render" class="pulse-report-render" :style="calWebStyle">
-    <grid-layout :layout.sync="calChartGridLayout" :col-num="48" :row-height="10" :is-draggable="false" :is-resizable="false" :is-mirrored="false" :vertical-compact="false" :margin="[3,3]" :use-css-transforms="true">
+    <grid-layout id="vue-grid-layout" :layout.sync="calChartGridLayout" :col-num="48" :row-height="10" :is-draggable="false" :is-resizable="false" :is-mirrored="false" :vertical-compact="false" :margin="[3,3]" :use-css-transforms="true" @layout-ready="handleGridlayoutReady">
       <grid-item v-for="item in calReportData" :key="item.chartGrid.i" :x="item.chartGrid.x" :y="item.chartGrid.y" :w="item.chartGrid.w" :h="item.chartGrid.h" :i="item.chartGrid.i">
         <div class="vue-grid-item-wrap">
           <h3 class="chart-chapter" v-text="item.chart_chapter"></h3>
@@ -67,7 +67,8 @@ export default {
   data () {
     return {
       rowHeight: 10,
-      chapterList: []
+      chapterList: [],
+      isMounted:false
     }
   },
   methods: {
@@ -154,7 +155,7 @@ export default {
           watermark_width: 300,          //水印宽度
           watermark_height: 200,         //水印长度
           watermark_angle: 30,            //水印倾斜度数
-          watermark_parent_node: "pulse-report-render",
+          watermark_parent_node: "vue-grid-layout",
           monitor: false
         }, this.watermarkData))
       }
@@ -168,6 +169,13 @@ export default {
         return
       }
       watermark.remove()
+    },
+   /**
+    * @description: 初始化水印，页面resize时将重新渲染水印
+    * @return: 
+    */
+    handleGridlayoutReady(){
+      this.initWatermark()
     }
   },
   computed: {
@@ -209,10 +217,10 @@ export default {
 
   },
   updated () {
-
   },
   mounted () {
-    this.initWatermark()
+// this.initWatermark()
+// 该组件mounted时,vue-grid-layout虽然已经mounted,但它还需要一定的运算计算出页面的高度。此时初始化水印会出现水印不完整的情况，所以一定要在handleGridlayoutReady方法中初始化。
   },
   destroyed () {
     this.removeWatermark()

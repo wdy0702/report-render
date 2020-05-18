@@ -2,7 +2,7 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 05:34:35
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-15 11:22:09
+ * @LastEditTime: 2020-05-18 15:39:38
  -->
 <template>
   <div class="table-wrap">
@@ -76,7 +76,7 @@ export default {
             // 百分数处理
 
             let tempExp = item.expression.replace(/(-?(\d+\.?\d+?)%)/g, (match) => {
-              console.log(match);
+              // console.log(match);
               const str = parseFloat(match)
 
               return str;
