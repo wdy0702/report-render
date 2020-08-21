@@ -2,10 +2,14 @@
  * @Author: dengyue.wang
  * @Date: 2020-04-21 09:01:32
  * @LastEditors: dengyue.wang
- * @LastEditTime: 2020-05-18 15:48:46
+ * @LastEditTime: 2020-08-21 10:01:11
  -->
 <template>
   <div id="pulse-report-render" class="pulse-report-render" :style="calWebStyle">
+    <!-- 栏目sheet -->
+    <div class="sheet" v-if="reportData && reportData.chart_chapter_collapsible">
+      <pulse-tab :options="columnList" v-model="activeColumn"></pulse-tab>
+    </div>
     <grid-layout id="vue-grid-layout" :layout.sync="calChartGridLayout" :col-num="48" :row-height="10" :is-draggable="false" :is-resizable="false" :is-mirrored="false" :vertical-compact="false" :margin="[3,3]" :use-css-transforms="true" @layout-ready="handleGridlayoutReady">
       <grid-item v-for="item in calReportData" :key="item.chartGrid.i" :x="item.chartGrid.x" :y="item.chartGrid.y" :w="item.chartGrid.w" :h="item.chartGrid.h" :i="item.chartGrid.i">
         <div class="vue-grid-item-wrap">
@@ -42,6 +46,7 @@ import watermark from 'watermark-dom'
 import PulseEcharts from '../components/PulseEcharts.vue'
 import PulseTable from '../components/PulseTable.vue'
 import PulseMarkdown from '../components/PulseMarkdown.vue'
+import PulseTab from '../components/PulseTab.vue'
 
 export default {
   name: "ReportRender",
@@ -62,13 +67,17 @@ export default {
     GridItem: VueGridLayout.GridItem,
     PulseEcharts,
     PulseTable,
-    PulseMarkdown
+    PulseMarkdown,
+    PulseTab
   },
   data () {
     return {
       rowHeight: 10,
       chapterList: [],
-      isMounted:false
+      isMounted: false,
+      activeColumn: "",
+      columnList: [
+      ]
     }
   },
   methods: {
@@ -170,12 +179,34 @@ export default {
       }
       watermark.remove()
     },
-   /**
-    * @description: 初始化水印，页面resize时将重新渲染水印
+    /**
+     * @description: 初始化水印，页面resize时将重新渲染水印
+     * @return: 
+     */
+    handleGridlayoutReady () {
+      this.initWatermark()
+    },
+    /**
+    * @description: columns
     * @return: 
     */
-    handleGridlayoutReady(){
-      this.initWatermark()
+    calColumnList () {
+      let temp = []
+      if (this.reportData.chart_chapter_collapsible && Array.isArray(this.reportData.charts) && this.reportData.charts.length) {
+        let hash = {};
+        temp = this.reportData.charts.reduce((item, next) => {
+          hash[next.chart_column_index] ? '' : hash[next.chart_column_index] = true && item.push({
+            chart_column_index: `${next.chart_column_index}`,
+            chart_column_txt: next.chart_column_txt
+          });
+          return item
+        }, []).filter(i => Boolean(i.chart_column_txt)).sort((a, b) => a.chart_column_index - b.chart_column_index)
+
+        this.columnList = temp
+        if (Array.isArray(this.columnList) && this.columnList.length > 0) {
+          this.activeColumn = `${this.columnList[0].chart_column_index}`
+        }
+      }
     }
   },
   computed: {
@@ -192,6 +223,9 @@ export default {
     */
     calReportData () {
       let charts = this.reportData && Array.isArray(this.reportData.charts) && this.reportData.charts.filter(i => i.chart_sub_type) || []
+      if(this.calReportOriginalData && this.calReportOriginalData.chart_chapter_collapsible){
+        charts = charts.filter(i => i.chart_column_index == this.activeColumn)
+      }
       let result = []
       charts.forEach(item => {
         let cur = result.find(i => i.chart_chapter_index === item.chart_chapter_index)
@@ -212,6 +246,9 @@ export default {
       })
       return result
     },
+    calReportOriginalData(){
+      return JSON.parse(JSON.stringify(this.reportData))
+    }
   },
   created () {
 
@@ -219,8 +256,9 @@ export default {
   updated () {
   },
   mounted () {
-// this.initWatermark()
-// 该组件mounted时,vue-grid-layout虽然已经mounted,但它还需要一定的运算计算出页面的高度。此时初始化水印会出现水印不完整的情况，所以一定要在handleGridlayoutReady方法中初始化。
+    // this.initWatermark()
+    // 该组件mounted时,vue-grid-layout虽然已经mounted,但它还需要一定的运算计算出页面的高度。此时初始化水印会出现水印不完整的情况，所以一定要在handleGridlayoutReady方法中初始化。
+    this.calColumnList()
   },
   destroyed () {
     this.removeWatermark()
